@@ -1,0 +1,34 @@
+{
+  "name": "s3-replicator",
+  "version": "1.0.0",
+  "description": "Replicates S3 objects to configured buckets",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "node_modules/gulp/bin/gulp.js",
+    "package": "aws cloudformation package --template-file template.yml --output-template-file packaged-template.yml --s3-bucket $CODE_BUCKET",
+    "deploy": "aws cloudformation deploy --template-file packaged-template.yml --capabilities CAPABILITY_IAM --stack-name dev-s3-replicator-$USER --parameter-overrides destBuckets=$DEST_BUCKETS"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evanchiu/s3-replicator.git"
+  },
+  "keywords": [
+    "Serverless",
+    "Lambda",
+    "S3",
+    "copy",
+    "cross region"
+  ],
+  "author": "Evan Chiu <evan@evanchiu.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/evanchiu/s3-replicator/issues"
+  },
+  "homepage": "https://github.com/evanchiu/s3-replicator#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-zip": "^4.0.0",
+    "jshint": "^2.9.5"
+  }
+}

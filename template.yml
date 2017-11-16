@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: Replicates S3 objects to configured buckets
+Resources:
+  replicateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Replicates S3 objects to configured buckets
+      Handler: src/index.handler
+      Runtime: nodejs6.10
+      CodeUri: build/replicator.zip
+      Policies: AmazonS3FullAccess
+      Timeout: 10
+      Events:
+        upload:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: sourceBucket
+            Events: s3:ObjectCreated:*
+      Environment:
+        Variables:
+          DEST_BUCKETS:
+            Ref: destBuckets
+  sourceBucket:
+    Type: AWS::S3::Bucket
+Parameters:
+  destBuckets:
+    Type: String
+    Description: Comma-delimited list of buckets to replicate objects into
