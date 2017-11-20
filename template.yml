@@ -9,7 +9,9 @@ Resources:
       Handler: src/index.handler
       Runtime: nodejs6.10
       CodeUri: build/replicator.zip
-      Policies: AmazonS3FullAccess
+      Policies:
+        - S3CrudPolicy:
+            BucketName: '*'
       Timeout: 10
       Events:
         upload:
