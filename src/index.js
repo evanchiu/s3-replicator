@@ -2,12 +2,12 @@ const aws = require('aws-sdk');
 const s3 = new aws.S3();
 const path = require('path');
 
-const destBuckets = process.env.DEST_BUCKETS.split(',');
+const destBucket = process.env.DEST_BUCKET;
 
 exports.handler = function main(event, context) {
   // Fail on mising data
-  if (!destBuckets) {
-    context.fail('Error: Environment variable DEST_BUCKETS missing');
+  if (!destBucket) {
+    context.fail('Error: Environment variable DEST_BUCKET missing');
     return;
   }
   if (event.Records === null) {
@@ -15,12 +15,10 @@ exports.handler = function main(event, context) {
     return;
   }
 
-  // Make a task for each combination of record and destBucket
+  // Make a task for each record
   let tasks = [];
   for (let i = 0; i < event.Records.length; i++) {
-    for (let j = 0; j < destBuckets.length; j++) {
-      tasks.push(replicatePromise(event.Records[i], destBuckets[j]));
-    }
+    tasks.push(replicatePromise(event.Records[i], destBucket));
   }
 
   Promise.all(tasks)
