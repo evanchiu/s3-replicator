@@ -7,7 +7,7 @@ Resources:
     Properties:
       Description: Replicates S3 objects to configured bucket
       Handler: src/index.handler
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       CodeUri: build/replicator.zip
       Policies:
         - S3ReadPolicy:

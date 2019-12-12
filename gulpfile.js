@@ -15,10 +15,10 @@ gulp.task('zip', function() {
   const paths = [
     'src/*.js'
   ];
-  gulp.src(paths, { base: '.' })
+  return gulp.src(paths, { base: '.' })
     .pipe(zip('replicator.zip'))
     .pipe(gulp.dest('build'));
 });
 
 // default runs lint, then packages the code into the build directory
-gulp.task('default', ['lint', 'zip']);
+gulp.task('default', gulp.series('lint', 'zip'));
